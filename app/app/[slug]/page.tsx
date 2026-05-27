@@ -130,7 +130,7 @@ export default function AppDetail() {
 
               <button
                 onClick={() => {
-                  router.push('/#contact');
+                  router.push('/contact');
                 }}
                 className="w-full border border-white/20 hover:border-accent text-white/70 hover:text-white font-medium py-3 px-6 rounded-full transition-colors text-sm"
               >

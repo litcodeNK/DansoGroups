@@ -5,26 +5,21 @@ import { Menu, X } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
 import { gsap } from '@/lib/gsap';
 
-interface SidebarProps {
-  activeSection: string;
-}
-
 const navLinks = [
-  { name: 'HOME',     href: '#home' },
-  { name: 'PRODUCTS', href: '#products' },
-  { name: 'BOOKS',    href: '#books' },
-  { name: 'SERVICES', href: '#services' },
-  { name: 'ABOUT',    href: '#about' },
-  { name: 'CONTACT',  href: '#contact' },
+  { name: 'HOME',     href: '/' },
+  { name: 'PRODUCTS', href: '/products' },
+  { name: 'BOOKS',    href: '/books' },
+  { name: 'SERVICES', href: '/services' },
+  { name: 'ABOUT',    href: '/about' },
+  { name: 'CONTACT',  href: '/contact' },
 ];
 
-export function Sidebar({ activeSection }: SidebarProps) {
+export function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const router   = useRouter();
   const pathname = usePathname();
   const sidebarRef = useRef<HTMLElement>(null);
 
-  // Entrance animation on mount
   useEffect(() => {
     if (!sidebarRef.current) return;
     const ctx = gsap.context(() => {
@@ -43,13 +38,9 @@ export function Sidebar({ activeSection }: SidebarProps) {
     return () => ctx.revert();
   }, []);
 
-  const scrollTo = (href: string) => {
+  const navigate = (href: string) => {
     setIsOpen(false);
-    if (pathname !== '/') {
-      router.push(`/${href}`);
-    } else {
-      document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
-    }
+    router.push(href);
   };
 
   const Content = () => (
@@ -57,7 +48,7 @@ export function Sidebar({ activeSection }: SidebarProps) {
       <div>
         <div
           className="sidebar-logo mb-16 cursor-pointer"
-          onClick={() => scrollTo('#home')}
+          onClick={() => navigate('/')}
         >
           <div className="w-12 h-12 border-2 border-white flex items-center justify-center mb-2 hover:border-accent transition-colors duration-300">
             <span className="text-2xl font-bold font-serif">D</span>
@@ -67,11 +58,11 @@ export function Sidebar({ activeSection }: SidebarProps) {
 
         <nav className="flex flex-col gap-6">
           {navLinks.map((link) => {
-            const active = pathname === '/' && activeSection === link.href.substring(1);
+            const active = pathname === link.href;
             return (
               <button
                 key={link.name}
-                onClick={() => scrollTo(link.href)}
+                onClick={() => navigate(link.href)}
                 className={`sidebar-link relative text-left text-sm font-semibold tracking-widest transition-colors duration-300 group ${
                   active ? 'text-accent' : 'text-white hover:text-accent/80'
                 }`}
@@ -88,7 +79,7 @@ export function Sidebar({ activeSection }: SidebarProps) {
         </nav>
 
         <button
-          onClick={() => scrollTo('#contact')}
+          onClick={() => navigate('/contact')}
           className="sidebar-cta mt-12 bg-accent hover:bg-accent/90 text-white text-sm font-bold py-3 px-6 rounded-full tracking-wider transition-all w-full hover:shadow-lg hover:shadow-accent/20 hover:scale-[1.03]"
         >
           GET IN TOUCH

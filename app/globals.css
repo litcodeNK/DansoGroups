@@ -2,8 +2,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-dark: #1a1a1a;
-  --color-accent: #E8650A;
+  --color-dark: #0D2A55;
+  --color-accent: #2D5BE3;
   --color-light: #ffffff;
   --font-sans: 'Inter', sans-serif;
   --font-serif: 'Playfair Display', serif;
@@ -15,6 +15,43 @@ html {
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #1a1a1a;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #0D1B2A;
+}
+
+/* ── Hero shape floating animations ─────────────────────────── */
+
+/* Gentle vertical float — square outline */
+@keyframes heroFloatA {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-22px); }
+}
+
+/* Float + slight sway — small square */
+@keyframes heroFloatB {
+  0%   { transform: translateY(0px) rotate(0deg); }
+  25%  { transform: translateY(-12px) rotate(-4deg); }
+  50%  { transform: translateY(-20px) rotate(0deg); }
+  75%  { transform: translateY(-10px) rotate(4deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+/* Drift — wave SVG (slower, more organic) */
+@keyframes heroFloatC {
+  0%   { transform: translateY(0px) translateX(0px); }
+  30%  { transform: translateY(-14px) translateX(5px); }
+  60%  { transform: translateY(-8px) translateX(-4px); }
+  100% { transform: translateY(0px) translateX(0px); }
+}
+
+/* Gold shapes on book slide */
+@keyframes heroFloatGold {
+  0%, 100% { transform: translateY(0px) rotate(45deg); }
+  50%       { transform: translateY(-16px) rotate(40deg); }
+}
+
+@keyframes heroFloatGoldB {
+  0%   { transform: translateY(0px) rotate(-12deg); }
+  50%  { transform: translateY(-18px) rotate(-8deg); }
+  100% { transform: translateY(0px) rotate(-12deg); }
 }

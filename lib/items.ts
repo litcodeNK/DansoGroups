@@ -16,6 +16,27 @@ export interface Item {
 
 export const items: Item[] = [
   {
+    slug: 'be-a-ghanaian',
+    name: 'Be A Ghanaian',
+    type: 'book',
+    image: '/book-be-a-ghanaian-cover.jpg',
+    description:
+      'A revolutionary call to action for every Ghanaian to dare to stay and build. Liberate the mind, build the nation.',
+    longDescription:
+      'From a deeply personal awakening — studying belief systems, uncovering pre-colonial history, and wrestling with Ghana\'s potential — Asante Danso writes an unflinching manifesto for mind liberation and national development. Spanning 16 chapters, this book takes you from intellectual awakening through Ghana\'s rich history before colonial contact, the African mindset, unity, leadership, religion, and freedom — culminating in a practical Call to Action with your first three steps to start building tomorrow.',
+    author: 'Asante Danso',
+    externalUrl: '/books',
+    features: [
+      'A personal awakening from partial to complete consciousness',
+      "Ghana's rich history before colonial contact",
+      'How unity creates collective power and national control',
+      'The African mindset — rewiring centuries of conditioning',
+      'Leadership in Ghana — honest diagnosis and bold vision',
+      'Mind liberation through intentional mass education',
+      'Your first three concrete steps to start building tomorrow',
+    ],
+  },
+  {
     slug: 'danso-mall',
     name: 'Danso Mall',
     type: 'app',
@@ -47,13 +68,53 @@ export const items: Item[] = [
     longDescription:
       'Drawing on research across 12 African nations and interviews with over 50 tech founders, investors, and policymakers, this book maps the continent\'s digital transformation. From fintech in Nigeria to agritech in Kenya and cybersecurity in South Africa, Dr. Danso charts the trends, challenges, and immense opportunities that define Africa\'s tech decade.',
     author: 'Dr. Kofi Danso',
-    externalUrl: 'https://amazon.com',
+    externalUrl: '/books',
     features: [
       'Case studies from 12 African nations',
       'Insights from 50+ tech founders and investors',
       'In-depth investment landscape analysis',
       'Policy recommendations for governments',
       'Practical playbook for African entrepreneurs',
+    ],
+  },
+  {
+    slug: 'cybersecurity-for-african-enterprises',
+    name: 'Cybersecurity for African Enterprises',
+    type: 'book',
+    image:
+      'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop',
+    description:
+      'A comprehensive guide to protecting your business in Africa\'s rapidly evolving digital landscape, covering threats, compliance, and resilience strategies tailored for the continent.',
+    longDescription:
+      'As African businesses accelerate their digital transformation, cyber threats are growing at an alarming rate. This book equips enterprise leaders, IT managers, and security teams with practical frameworks for threat detection, incident response, and regulatory compliance across key African markets.',
+    author: 'Dr. Kofi Danso',
+    externalUrl: '/books',
+    features: [
+      'Africa-specific threat landscape analysis',
+      'Step-by-step incident response playbooks',
+      'Compliance guides for GDPA and local regulations',
+      'Vendor selection and zero-trust frameworks',
+      'Real-world case studies from African enterprises',
+    ],
+  },
+  {
+    slug: 'building-tech-in-africa',
+    name: "Building Tech in Africa: A Founder's Guide",
+    type: 'book',
+    image:
+      'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop',
+    description:
+      'The definitive playbook for building, funding, and scaling technology startups across Africa — from ideation through Series A and beyond.',
+    longDescription:
+      'Packed with first-hand accounts from founders who have navigated Africa\'s unique market dynamics, regulatory landscapes, and investor ecosystems, this guide provides an actionable roadmap for the next generation of African tech entrepreneurs.',
+    author: 'Abena Mensah-Danso',
+    externalUrl: '/books',
+    features: [
+      'Market validation strategies for African consumers',
+      'Funding landscape: angels, VCs, and grants',
+      'Hiring and building remote engineering teams',
+      'Navigating multi-country regulatory environments',
+      'Growth hacking on lean African budgets',
     ],
   },
   {
