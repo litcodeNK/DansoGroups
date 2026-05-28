@@ -1,6 +1,10 @@
+'use client';
+
+import { useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Shield, ShoppingBag, Smartphone, BookOpen, ArrowRight } from 'lucide-react';
 import { FloatingShapes } from './FloatingShapes';
+import { gsap } from '@/lib/gsap';
 
 function SectionBadge({ children }: { children: React.ReactNode }) {
   return (
@@ -52,15 +56,26 @@ const cases = [
 ];
 
 export function CaseStudies() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.cs-badge', { x: -40, opacity: 0, duration: 0.75, ease: 'expo.out', scrollTrigger: { trigger: '.cs-badge', start: 'top 85%' } });
+      gsap.from('.cs-heading', { clipPath: 'inset(100% 0 0 0)', y: 24, opacity: 0, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: '.cs-heading', start: 'top 85%' } });
+      gsap.from('.cs-card', { y: 80, opacity: 0, rotation: 1.5, duration: 0.9, stagger: 0.13, ease: 'expo.out', transformOrigin: 'center bottom', scrollTrigger: { trigger: '.cs-card', start: 'top 82%' } });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="relative py-24 bg-white overflow-hidden">
+    <section ref={sectionRef} className="relative py-24 bg-white overflow-hidden">
       <FloatingShapes variant="light" />
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
-            <SectionBadge>From Our Case Studies</SectionBadge>
-            <h2 className="text-4xl font-extrabold" style={{ color: '#0D1B2A' }}>
+            <div className="cs-badge"><SectionBadge>From Our Case Studies</SectionBadge></div>
+            <h2 className="cs-heading text-4xl font-extrabold" style={{ color: '#0D1B2A' }}>
               We Delivered Best Solution
             </h2>
           </div>
@@ -78,7 +93,7 @@ export function CaseStudies() {
           {cases.map(({ category, title, desc, accentColor, img, icon: Icon }) => (
             <div
               key={title}
-              className="bg-white rounded-tl-3xl rounded-br-3xl overflow-hidden flex flex-col group hover:shadow-xl transition-shadow"
+              className="cs-card bg-white rounded-tl-3xl rounded-br-3xl overflow-hidden flex flex-col group hover:shadow-xl transition-shadow"
               style={{ border: '1px solid #E2E8F0' }}
             >
               {/* Image */}

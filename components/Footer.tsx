@@ -1,6 +1,10 @@
+'use client';
+
+import { useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Clock, Phone, MapPin } from 'lucide-react';
+import { gsap } from '@/lib/gsap';
 
 const itSolution = [
   'IT Management',
@@ -56,8 +60,24 @@ const socials = [
 ];
 
 export function Footer() {
+  const footerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.footer-col', {
+        y: 50, opacity: 0, duration: 0.85, stagger: 0.14, ease: 'expo.out',
+        scrollTrigger: { trigger: '.footer-col', start: 'top 92%' },
+      });
+      gsap.from('.footer-bottom', {
+        y: 20, opacity: 0, duration: 0.7, delay: 0.4, ease: 'expo.out',
+        scrollTrigger: { trigger: '.footer-bottom', start: 'top 98%' },
+      });
+    }, footerRef);
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <footer style={{ backgroundColor: '#060D18', color: '#ffffff' }} className="relative overflow-hidden">
+    <footer ref={footerRef} style={{ backgroundColor: '#060D18', color: '#ffffff' }} className="relative overflow-hidden">
       {/* Decorative triangles */}
       <div className="absolute top-0 left-0 pointer-events-none opacity-30">
         <svg width="120" height="180" viewBox="0 0 120 180" fill="none">
@@ -74,7 +94,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-14">
 
           {/* Col 1 — brand */}
-          <div>
+          <div className="footer-col">
             {/* Logo on dark bg — frosted white pill so it reads cleanly */}
             <Link href="/" className="inline-flex mb-5">
               <span
@@ -116,7 +136,7 @@ export function Footer() {
           </div>
 
           {/* Col 2 — IT Solution */}
-          <div>
+          <div className="footer-col">
             <h4 className="text-white font-bold text-base mb-6">IT Solution</h4>
             <ul className="space-y-3">
               {itSolution.map((item) => (
@@ -134,7 +154,7 @@ export function Footer() {
           </div>
 
           {/* Col 3 — Quick Links */}
-          <div>
+          <div className="footer-col">
             <h4 className="text-white font-bold text-base mb-6">Quick Link</h4>
             <ul className="space-y-3">
               {quickLinks.map(({ label, href }) => (
@@ -152,7 +172,7 @@ export function Footer() {
           </div>
 
           {/* Col 4 — Contact */}
-          <div>
+          <div className="footer-col">
             <h4 className="text-white font-bold text-base mb-6">Contact Us</h4>
             <div className="space-y-5">
               <div className="flex items-start gap-3">
@@ -187,7 +207,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div
-          className="pt-8 flex flex-col md:flex-row justify-between items-center gap-3 text-sm"
+          className="footer-bottom pt-8 flex flex-col md:flex-row justify-between items-center gap-3 text-sm"
           style={{ borderTop: '1px solid rgba(255,255,255,0.08)', color: '#475569' }}
         >
           <p>

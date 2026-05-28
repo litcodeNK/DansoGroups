@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Phone, Mail, MapPin } from 'lucide-react';
 import { toast } from 'sonner';
 import { FloatingShapes } from './FloatingShapes';
+import { gsap } from '@/lib/gsap';
 
 function SectionBadge({ children }: { children: React.ReactNode }) {
   return (
@@ -50,6 +51,30 @@ const socials = [
 
 export function Contact() {
   const [submitting, setSubmitting] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.contact-info', {
+        x: -80, opacity: 0, duration: 1, ease: 'expo.out',
+        scrollTrigger: { trigger: '.contact-info', start: 'top 82%' },
+      });
+      gsap.from('.contact-form-wrap', {
+        x: 80, opacity: 0, duration: 1, ease: 'expo.out',
+        scrollTrigger: { trigger: '.contact-form-wrap', start: 'top 82%' },
+      });
+      gsap.from('.contact-badge', {
+        y: -30, opacity: 0, duration: 0.7, delay: 0.2, ease: 'expo.out',
+        scrollTrigger: { trigger: '.contact-badge', start: 'top 85%' },
+      });
+      gsap.from('.contact-heading', {
+        clipPath: 'inset(100% 0 0 0)', y: 24, opacity: 0,
+        duration: 1, delay: 0.1, ease: 'expo.out',
+        scrollTrigger: { trigger: '.contact-heading', start: 'top 85%' },
+      });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,13 +87,13 @@ export function Contact() {
   };
 
   return (
-    <section className="relative py-24 bg-white overflow-hidden">
+    <section ref={sectionRef} className="relative py-24 bg-white overflow-hidden">
       <FloatingShapes variant="light" />
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-[1fr_1.4fr] gap-10 items-start">
 
           {/* ── Left: Contact Information card with background image ── */}
-          <div className="relative rounded-tl-3xl rounded-br-3xl overflow-hidden text-white" style={{ minHeight: '480px' }}>
+          <div className="contact-info relative rounded-tl-3xl rounded-br-3xl overflow-hidden text-white" style={{ minHeight: '480px' }}>
             {/* Background image */}
             <Image
               src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=800&auto=format&fit=crop"
@@ -142,9 +167,9 @@ export function Contact() {
           </div>
 
           {/* ── Right: Contact form ── */}
-          <div>
-            <SectionBadge>Get In Touch</SectionBadge>
-            <h2 className="text-4xl font-extrabold mb-4" style={{ color: '#0D1B2A' }}>
+          <div className="contact-form-wrap">
+            <div className="contact-badge"><SectionBadge>Get In Touch</SectionBadge></div>
+            <h2 className="contact-heading text-4xl font-extrabold mb-4" style={{ color: '#0D1B2A' }}>
               Ready To Get Started?
             </h2>
             <p className="text-sm leading-relaxed mb-8" style={{ color: '#64748B' }}>

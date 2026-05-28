@@ -1,8 +1,9 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Settings, HeadphonesIcon, Pause, Play } from 'lucide-react';
 import { FloatingShapes } from './FloatingShapes';
+import { gsap } from '@/lib/gsap';
 
 function SectionBadge({ children }: { children: React.ReactNode }) {
   return (
@@ -19,96 +20,110 @@ function SectionBadge({ children }: { children: React.ReactNode }) {
 }
 
 const featureCards = [
-  {
-    icon: Settings,
-    title: 'Best Services',
-    desc: 'Scelerisque augue the consequat sodales',
-  },
-  {
-    icon: HeadphonesIcon,
-    title: '24/7 Call Support',
-    desc: 'Scelerisque augue the consequat sodales',
-  },
+  { icon: Settings,       title: 'Best Services',    desc: 'World-class IT solutions tailored to your business needs.' },
+  { icon: HeadphonesIcon, title: '24/7 Call Support', desc: 'Round-the-clock support so your operations never stop.' },
 ];
 
 const skills = [
   { label: 'Information Technology', pct: 80 },
-  { label: 'Technology Consultant', pct: 95 },
+  { label: 'Technology Consultant',  pct: 95 },
 ];
 
 export function WhyChooseUs() {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRef  = useRef<HTMLVideoElement>(null);
+  const leftRef   = useRef<HTMLDivElement>(null);
   const [playing, setPlaying] = useState(false);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.wcu-badge', {
+        x: -40, opacity: 0, duration: 0.75, ease: 'expo.out',
+        scrollTrigger: { trigger: '.wcu-badge', start: 'top 85%' },
+      });
+      gsap.from('.wcu-heading', {
+        clipPath: 'inset(100% 0 0 0)', y: 26, opacity: 0,
+        duration: 1, ease: 'expo.out',
+        scrollTrigger: { trigger: '.wcu-heading', start: 'top 85%' },
+      });
+      gsap.from('.wcu-feat-card', {
+        y: 50, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'expo.out',
+        scrollTrigger: { trigger: '.wcu-feat-card', start: 'top 85%' },
+      });
+
+      /* Progress bars grow from 0 */
+      document.querySelectorAll<HTMLElement>('.wcu-bar').forEach((bar) => {
+        const target = bar.dataset.pct ?? '0';
+        gsap.fromTo(
+          bar,
+          { width: '0%' },
+          {
+            width: `${target}%`,
+            duration: 1.5,
+            ease: 'expo.out',
+            scrollTrigger: { trigger: bar, start: 'top 90%' },
+          }
+        );
+      });
+    }, leftRef);
+
+    return () => ctx.revert();
+  }, []);
 
   function togglePlay() {
     const v = videoRef.current;
     if (!v) return;
-    if (v.paused) {
-      v.play();
-      setPlaying(true);
-    } else {
-      v.pause();
-      setPlaying(false);
-    }
+    if (v.paused) { v.play(); setPlaying(true); }
+    else          { v.pause(); setPlaying(false); }
   }
 
   return (
     <section className="overflow-hidden">
       <div className="grid lg:grid-cols-2">
+
         {/* Left — light content */}
-        <div className="relative py-20 px-8 lg:px-16 xl:px-20 overflow-hidden" style={{ backgroundColor: '#F3F6FF' }}>
+        <div ref={leftRef} className="relative py-20 px-8 lg:px-16 xl:px-20 overflow-hidden" style={{ backgroundColor: '#F3F6FF' }}>
           <FloatingShapes variant="light" />
           <div className="relative z-10">
-          <SectionBadge>Why Choose Us</SectionBadge>
+            <div className="wcu-badge"><SectionBadge>Why Choose Us</SectionBadge></div>
 
-          <h2 className="text-3xl lg:text-4xl font-extrabold leading-tight mb-8" style={{ color: '#0D1B2A' }}>
-            Elevate Your Achievements
-            <br />
-            Using Premier IT Solutions
-          </h2>
+            <h2 className="wcu-heading text-3xl lg:text-4xl font-extrabold leading-tight mb-8" style={{ color: '#0D1B2A' }}>
+              Elevate Your Achievements
+              <br />
+              Using Premier IT Solutions
+            </h2>
 
-          {/* Feature icon cards */}
-          <div className="grid grid-cols-2 gap-5 mb-10">
-            {featureCards.map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="bg-white rounded-xl p-5 shadow-sm">
-                <div
-                  className="w-12 h-12 rounded-lg flex items-center justify-center mb-4"
-                  style={{ backgroundColor: '#EEF2FF' }}
-                >
-                  <Icon size={22} style={{ color: '#2D5BE3' }} />
+            {/* Feature icon cards */}
+            <div className="grid grid-cols-2 gap-5 mb-10">
+              {featureCards.map(({ icon: Icon, title, desc }) => (
+                <div key={title} className="wcu-feat-card bg-white rounded-xl p-5 shadow-sm">
+                  <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ backgroundColor: '#EEF2FF' }}>
+                    <Icon size={22} style={{ color: '#2D5BE3' }} />
+                  </div>
+                  <h4 className="font-bold text-sm mb-1" style={{ color: '#0D1B2A' }}>{title}</h4>
+                  <p className="text-xs leading-relaxed" style={{ color: '#94A3B8' }}>{desc}</p>
                 </div>
-                <h4 className="font-bold text-sm mb-1" style={{ color: '#0D1B2A' }}>
-                  {title}
-                </h4>
-                <p className="text-xs leading-relaxed" style={{ color: '#94A3B8' }}>
-                  {desc}
-                </p>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {/* Progress bars — start at 0%, animated by GSAP */}
+            <div className="space-y-6">
+              {skills.map(({ label, pct }) => (
+                <div key={label}>
+                  <div className="flex justify-between mb-1.5">
+                    <span className="text-sm font-semibold" style={{ color: '#0D1B2A' }}>{label}</span>
+                    <span className="text-sm font-bold" style={{ color: '#2D5BE3' }}>{pct}%</span>
+                  </div>
+                  <div className="h-2 rounded-full" style={{ backgroundColor: '#E2E8F0' }}>
+                    <div
+                      className="wcu-bar h-full rounded-full"
+                      data-pct={pct}
+                      style={{ width: '0%', backgroundColor: '#2D5BE3' }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-
-          {/* Progress bars */}
-          <div className="space-y-6">
-            {skills.map(({ label, pct }) => (
-              <div key={label}>
-                <div className="flex justify-between mb-1.5">
-                  <span className="text-sm font-semibold" style={{ color: '#0D1B2A' }}>
-                    {label}
-                  </span>
-                  <span className="text-sm font-bold" style={{ color: '#2D5BE3' }}>
-                    {pct}%
-                  </span>
-                </div>
-                <div className="h-2 rounded-full" style={{ backgroundColor: '#E2E8F0' }}>
-                  <div
-                    className="h-full rounded-full"
-                    style={{ width: `${pct}%`, backgroundColor: '#2D5BE3' }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-          </div>{/* end z-10 wrapper */}
         </div>
 
         {/* Right — video panel */}
@@ -120,22 +135,16 @@ export function WhyChooseUs() {
             playsInline
             onEnded={() => setPlaying(false)}
           />
-
-          {/* Dark overlay — fades out when playing */}
           <div
             className="absolute inset-0 transition-opacity duration-500"
             style={{ backgroundColor: 'rgba(10,25,55,0.35)', opacity: playing ? 0 : 1, pointerEvents: 'none' }}
           />
-
-          {/* Blue curved accent at bottom — hides when playing */}
           {!playing && (
             <div
               className="absolute bottom-0 left-0 right-0 h-28 rounded-tl-[60%] pointer-events-none"
               style={{ backgroundColor: 'rgba(45,91,227,0.5)' }}
             />
           )}
-
-          {/* Play / Pause button */}
           <div className="absolute inset-0 flex items-center justify-center">
             <button
               onClick={togglePlay}
@@ -145,11 +154,7 @@ export function WhyChooseUs() {
             >
               {playing
                 ? <Pause size={20} fill="#2D5BE3" style={{ color: '#2D5BE3' }} />
-                : (
-                  <svg width="20" height="22" viewBox="0 0 20 22" fill="none">
-                    <path d="M2 2L18 11L2 20V2Z" fill="#2D5BE3" />
-                  </svg>
-                )
+                : <svg width="20" height="22" viewBox="0 0 20 22" fill="none"><path d="M2 2L18 11L2 20V2Z" fill="#2D5BE3" /></svg>
               }
             </button>
           </div>

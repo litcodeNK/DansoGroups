@@ -1,9 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Code, Shield, Smartphone, Settings, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { FloatingShapes } from './FloatingShapes';
+import { ParticleCanvas } from './ParticleCanvas';
+import { gsap } from '@/lib/gsap';
 
 function SectionBadge({ children }: { children: React.ReactNode }) {
   return (
@@ -49,16 +53,39 @@ const services = [
 export function Services() {
   const [start, setStart] = useState(0);
   const visible = 3;
+  const sectionRef = useRef<HTMLElement>(null);
 
   const prev = () => setStart((s) => Math.max(0, s - 1));
   const next = () => setStart((s) => Math.min(services.length - visible, s + 1));
 
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.srv-badge', {
+        x: -40, opacity: 0, duration: 0.75, ease: 'expo.out',
+        scrollTrigger: { trigger: '.srv-badge', start: 'top 85%' },
+      });
+      gsap.from('.srv-heading', {
+        clipPath: 'inset(100% 0 0 0)', y: 24, opacity: 0,
+        duration: 1, ease: 'expo.out',
+        scrollTrigger: { trigger: '.srv-heading', start: 'top 85%' },
+      });
+      gsap.from('.srv-card', {
+        y: 80, opacity: 0, rotation: 1.5, duration: 0.9, stagger: 0.15, ease: 'expo.out',
+        transformOrigin: 'center bottom',
+        scrollTrigger: { trigger: '.srv-card', start: 'top 82%' },
+      });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="services"
       className="relative py-24 overflow-hidden"
       style={{ backgroundColor: '#060D18' }}
     >
+      <ParticleCanvas />
       <FloatingShapes variant="dark" />
 
       {/* Subtle mesh pattern overlay */}
@@ -75,8 +102,8 @@ export function Services() {
         {/* Header row */}
         <div className="flex items-end justify-between mb-12">
           <div>
-            <SectionBadge>Services We&apos;re Offering</SectionBadge>
-            <h2 className="text-4xl font-extrabold text-white">Exclusive IT Services</h2>
+            <div className="srv-badge"><SectionBadge>Services We&apos;re Offering</SectionBadge></div>
+            <h2 className="srv-heading text-4xl font-extrabold text-white">Exclusive IT Services</h2>
           </div>
           <div className="hidden lg:flex gap-3">
             <button
@@ -102,7 +129,7 @@ export function Services() {
           {services.slice(start, start + visible).map(({ title, icon: Icon, img, desc }) => (
             <div
               key={title}
-              className="bg-white rounded-tl-3xl rounded-br-3xl overflow-hidden flex flex-col group"
+              className="srv-card bg-white rounded-tl-3xl rounded-br-3xl overflow-hidden flex flex-col group"
             >
               {/* Image */}
               <div className="relative h-52 overflow-hidden">
