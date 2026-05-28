@@ -55,3 +55,9 @@ body {
   50%  { transform: translateY(-18px) rotate(-8deg); }
   100% { transform: translateY(0px) rotate(-12deg); }
 }
+
+/* Offerings ticker — right to left */
+@keyframes scroll-left {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

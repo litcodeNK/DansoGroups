@@ -19,16 +19,18 @@ function SectionBadge({ children, light }: { children: React.ReactNode; light?: 
   );
 }
 
-const offerings = [
-  { icon: '🌐', label: 'Website' },
-  { icon: '📱', label: 'Android' },
-  { icon: '🍎', label: 'IOS' },
-  { icon: '⌚', label: 'Watch' },
-  { icon: '📺', label: 'Tv' },
-  { icon: '🚀', label: 'IOT' },
+const products = [
+  { label: 'DansoSecure',  img: '/danso-secure-hero.jpg',    accent: '#2D5BE3' },
+  { label: 'Danso Mall',   img: '/danso-mall-home.jpg',       accent: '#0891B2' },
+  { label: 'PrimeTrack',   img: '/primetrack-clockin.jpg',    accent: '#059669' },
+  { label: 'DansoSecure',  img: '/danso-secure-services.jpg', accent: '#2D5BE3' },
+  { label: 'Danso Mall',   img: '/danso-mall-categories.jpg', accent: '#0891B2' },
+  { label: 'PrimeTrack',   img: '/primetrack-sales.jpg',      accent: '#059669' },
 ];
 
 function OfferingsSection() {
+  const ticker = [...products, ...products];
+
   return (
     <section
       className="py-24 relative overflow-hidden"
@@ -65,23 +67,40 @@ function OfferingsSection() {
           </a>
         </div>
 
-        {/* Icon cards grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {offerings.map(({ icon, label }) => (
-            <div
-              key={label}
-              className="flex flex-col items-center gap-4 py-8 rounded-lg transition-colors hover:border-blue-500 cursor-pointer group"
-              style={{ border: '1px solid rgba(255,255,255,0.1)' }}
-            >
+        {/* Scrolling ticker */}
+        <div className="overflow-hidden">
+          <div
+            style={{
+              display: 'flex',
+              gap: '16px',
+              width: 'max-content',
+              animation: 'scroll-left 18s linear infinite',
+            }}
+          >
+            {ticker.map((p, i) => (
               <div
-                className="w-16 h-16 rounded-full flex items-center justify-center text-2xl group-hover:scale-110 transition-transform"
-                style={{ backgroundColor: 'rgba(45,91,227,0.18)' }}
+                key={i}
+                className="flex flex-col items-center gap-4 py-8 rounded-lg cursor-pointer group transition-colors shrink-0"
+                style={{
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  width: '160px',
+                }}
               >
-                {icon}
+                <div
+                  className="w-16 h-16 rounded-full overflow-hidden group-hover:scale-110 transition-transform"
+                  style={{ border: `2px solid ${p.accent}` }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={p.img}
+                    alt={p.label}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <span className="text-white font-bold text-sm text-center">{p.label}</span>
               </div>
-              <span className="text-white font-bold text-sm">{label}</span>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
