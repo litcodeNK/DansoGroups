@@ -320,6 +320,203 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
   );
 }
 
+/* ─── Consultation drawer ───────────────────────────────── */
+
+const SERVICES = [
+  'App Development',
+  'Cybersecurity / DansoSecure',
+  'E-Commerce / Danso Mall',
+  'Workforce Tracking / PrimeTrack',
+  'IT Consultancy',
+  'Database Security',
+  'Other',
+];
+
+function ConsultationDrawer({ onClose }: { onClose: () => void }) {
+  const [form, setForm] = useState({ name: '', email: '', phone: '', service: '', message: '' });
+  const [submitted, setSubmitted] = useState(false);
+
+  function set(field: string, value: string) {
+    setForm((f) => ({ ...f, [field]: value }));
+  }
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setSubmitted(true);
+  }
+
+  const inputCls = 'w-full px-4 py-3 text-sm outline-none transition-colors focus:ring-2';
+  const inputStyle = {
+    border: '1px solid #CBD5E1',
+    backgroundColor: '#F8FAFC',
+    color: '#0D1B2A',
+  } as React.CSSProperties;
+  const labelCls = 'block text-xs font-bold uppercase tracking-wider mb-1.5';
+  const labelStyle = { color: '#334155' };
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 z-[150]"
+        style={{ backgroundColor: 'rgba(0,0,0,0.55)' }}
+        onClick={onClose}
+      />
+
+      {/* Drawer panel */}
+      <div
+        className="fixed top-0 right-0 h-full z-[160] overflow-y-auto flex flex-col"
+        style={{
+          width: '460px',
+          maxWidth: '100vw',
+          backgroundColor: '#fff',
+          animation: 'slide-in-right 0.35s ease forwards',
+          boxShadow: '-8px 0 40px rgba(0,0,0,0.18)',
+        }}
+      >
+        {/* Header */}
+        <div
+          className="flex items-start justify-between p-7 shrink-0"
+          style={{ backgroundColor: '#2D5BE3' }}
+        >
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[3px] mb-1" style={{ color: 'rgba(255,255,255,0.65)' }}>
+              Free Consultation
+            </p>
+            <h3 className="text-2xl font-extrabold text-white leading-tight">
+              Book A<br />Consultation
+            </h3>
+            <p className="text-sm mt-2" style={{ color: 'rgba(255,255,255,0.7)' }}>
+              Tell us about your project — we&apos;ll get back to you within 24 hours.
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="shrink-0 mt-1 text-white/60 hover:text-white transition-colors"
+            aria-label="Close"
+          >
+            <X size={22} />
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="flex-1 p-7">
+          {submitted ? (
+            <div className="flex flex-col items-center justify-center h-full text-center py-16">
+              <div
+                className="w-16 h-16 rounded-full flex items-center justify-center mb-5"
+                style={{ backgroundColor: '#EEF2FF' }}
+              >
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2D5BE3" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </div>
+              <h4 className="text-xl font-extrabold mb-2" style={{ color: '#0D1B2A' }}>
+                Consultation Booked!
+              </h4>
+              <p className="text-sm leading-relaxed mb-8" style={{ color: '#64748B' }}>
+                Thank you, <strong>{form.name}</strong>. We&apos;ve received your request and will reach out to <strong>{form.email}</strong> within 24 hours.
+              </p>
+              <button
+                onClick={onClose}
+                className="text-white text-sm font-bold px-7 py-3 transition-opacity hover:opacity-90"
+                style={{ backgroundColor: '#2D5BE3' }}
+              >
+                Close
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Full Name */}
+              <div>
+                <label className={labelCls} style={labelStyle}>Full Name *</label>
+                <input
+                  required
+                  type="text"
+                  placeholder="e.g. Kwame Mensah"
+                  value={form.name}
+                  onChange={(e) => set('name', e.target.value)}
+                  className={inputCls}
+                  style={inputStyle}
+                />
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className={labelCls} style={labelStyle}>Email Address *</label>
+                <input
+                  required
+                  type="email"
+                  placeholder="you@example.com"
+                  value={form.email}
+                  onChange={(e) => set('email', e.target.value)}
+                  className={inputCls}
+                  style={inputStyle}
+                />
+              </div>
+
+              {/* Phone */}
+              <div>
+                <label className={labelCls} style={labelStyle}>Phone Number</label>
+                <input
+                  type="tel"
+                  placeholder="+233 54 000 0000"
+                  value={form.phone}
+                  onChange={(e) => set('phone', e.target.value)}
+                  className={inputCls}
+                  style={inputStyle}
+                />
+              </div>
+
+              {/* Service */}
+              <div>
+                <label className={labelCls} style={labelStyle}>Service Interested In *</label>
+                <select
+                  required
+                  value={form.service}
+                  onChange={(e) => set('service', e.target.value)}
+                  className={inputCls}
+                  style={{ ...inputStyle, appearance: 'auto' }}
+                >
+                  <option value="">Select a service…</option>
+                  {SERVICES.map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Message */}
+              <div>
+                <label className={labelCls} style={labelStyle}>Tell Us About Your Project</label>
+                <textarea
+                  rows={4}
+                  placeholder="Briefly describe your goals or challenges…"
+                  value={form.message}
+                  onChange={(e) => set('message', e.target.value)}
+                  className={inputCls}
+                  style={{ ...inputStyle, resize: 'vertical' }}
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full text-white text-sm font-bold py-4 transition-opacity hover:opacity-90 flex items-center justify-center gap-2"
+                style={{ backgroundColor: '#2D5BE3' }}
+              >
+                Book Consultation <ArrowRight size={16} />
+              </button>
+
+              <p className="text-xs text-center" style={{ color: '#94A3B8' }}>
+                Your information is kept private and never shared.
+              </p>
+            </form>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
 /* ─── Nav links ─────────────────────────────────────────── */
 
 const navLinks = [
@@ -348,9 +545,12 @@ function SocialBtn({ href, children }: { href: string; children: React.ReactNode
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [bookingOpen, setBookingOpen] = useState(false);
 
   const openSearch = useCallback(() => { setSearchOpen(true); setMobileOpen(false); }, []);
   const closeSearch = useCallback(() => setSearchOpen(false), []);
+  const openBooking = useCallback(() => { setBookingOpen(true); setMobileOpen(false); }, []);
+  const closeBooking = useCallback(() => setBookingOpen(false), []);
 
   return (
     <>
@@ -464,13 +664,13 @@ export function Navbar() {
               >
                 <Search size={18} />
               </button>
-              <Link
-                href="/contact"
+              <button
+                onClick={openBooking}
                 className="flex items-center gap-2 text-white text-sm font-bold px-6 py-3 transition-opacity hover:opacity-90 whitespace-nowrap"
                 style={{ backgroundColor: '#2D5BE3' }}
               >
-                Get A Quote <span className="text-base leading-none">→</span>
-              </Link>
+                Book A Consultation <span className="text-base leading-none">→</span>
+              </button>
             </div>
 
             {/* Mobile: search + hamburger */}
@@ -518,20 +718,22 @@ export function Navbar() {
                 {l.name}
               </Link>
             ))}
-            <Link
-              href="/contact"
-              className="block mt-4 text-white text-sm font-bold px-5 py-3 text-center"
+            <button
+              onClick={openBooking}
+              className="block w-full mt-4 text-white text-sm font-bold px-5 py-3 text-center"
               style={{ backgroundColor: '#2D5BE3' }}
-              onClick={() => setMobileOpen(false)}
             >
-              Get A Quote →
-            </Link>
+              Book A Consultation →
+            </button>
           </div>
         )}
       </header>
 
       {/* Search overlay — rendered outside header so it covers the full viewport */}
       {searchOpen && <SearchOverlay onClose={closeSearch} />}
+
+      {/* Consultation drawer */}
+      {bookingOpen && <ConsultationDrawer onClose={closeBooking} />}
     </>
   );
 }

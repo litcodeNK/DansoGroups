@@ -1,9 +1,9 @@
 const partners = [
-  { name: 'Tech Media', symbol: '◈' },
-  { name: 'Tech Media', symbol: '◆' },
-  { name: 'Tech Media', symbol: '▣' },
-  { name: 'Tech Media', symbol: '◇' },
-  { name: 'Tech Media', symbol: '◉' },
+  { name: 'Danso Group', symbol: '◈' },
+  { name: 'Danso Group', symbol: '◆' },
+  { name: 'Danso Group', symbol: '▣' },
+  { name: 'Danso Group', symbol: '◇' },
+  { name: 'Danso Group', symbol: '◉' },
 ];
 
 export function Partners() {
