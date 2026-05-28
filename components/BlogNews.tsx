@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { User, MessageCircle } from 'lucide-react';
+import { User, MessageCircle, ArrowRight } from 'lucide-react';
 
 function SectionBadge({ children }: { children: React.ReactNode }) {
   return (
@@ -64,11 +64,11 @@ export function BlogNews() {
           {posts.map((post, i) => (
             <article
               key={i}
-              className="rounded-xl overflow-hidden group transition-shadow hover:shadow-lg"
+              className="bg-white rounded-xl overflow-hidden flex flex-col group hover:shadow-lg transition-shadow"
               style={{ border: '1px solid #E2E8F0' }}
             >
-              {/* Image + date badge */}
-              <div className="relative h-56 overflow-hidden">
+              {/* Image */}
+              <div className="relative h-52 overflow-hidden">
                 <Image
                   src={post.img}
                   alt={post.title}
@@ -76,18 +76,22 @@ export function BlogNews() {
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                   sizes="(max-width:768px) 100vw, (max-width:1024px) 50vw, 33vw"
                 />
+              </div>
+
+              {/* Date badge overlapping (Gratech-style icon badge) */}
+              <div className="px-6 -mt-6 relative z-10">
                 <div
-                  className="absolute top-4 left-4 w-14 text-center py-2 text-white"
+                  className="w-14 h-14 flex flex-col items-center justify-center rounded-sm shadow-lg"
                   style={{ backgroundColor: '#2D5BE3' }}
                 >
-                  <p className="text-2xl font-extrabold leading-none">{post.day}</p>
-                  <p className="text-[11px] font-semibold mt-0.5">{post.month}</p>
+                  <p className="text-xl font-extrabold text-white leading-none">{post.day}</p>
+                  <p className="text-[10px] font-semibold text-white mt-0.5">{post.month}</p>
                 </div>
               </div>
 
               {/* Card body */}
-              <div className="p-6">
-                <div className="flex items-center gap-5 mb-4">
+              <div className="px-6 pt-3 pb-7 flex flex-col flex-1">
+                <div className="flex items-center gap-5 mb-3">
                   <span
                     className="flex items-center gap-1.5 text-xs font-medium"
                     style={{ color: '#64748B' }}
@@ -101,19 +105,19 @@ export function BlogNews() {
                     <MessageCircle size={12} /> {post.comments}
                   </span>
                 </div>
-                <hr style={{ borderColor: '#E2E8F0' }} className="mb-4" />
+                <hr style={{ borderColor: '#E2E8F0' }} className="mb-3" />
                 <h3
-                  className="font-bold text-base leading-snug mb-5 line-clamp-2"
+                  className="font-bold text-base leading-snug mb-5 flex-1 line-clamp-2"
                   style={{ color: '#0D1B2A' }}
                 >
                   {post.title}
                 </h3>
                 <a
                   href="/blog"
-                  className="flex items-center gap-2 text-sm font-bold transition-opacity hover:opacity-60"
-                  style={{ color: '#0D1B2A' }}
+                  className="inline-flex items-center gap-2 text-sm font-bold transition-opacity hover:opacity-70"
+                  style={{ color: '#2D5BE3' }}
                 >
-                  Read More <span>→</span>
+                  Read More <ArrowRight size={14} />
                 </a>
               </div>
             </article>

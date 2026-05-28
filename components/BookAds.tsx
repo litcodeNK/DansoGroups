@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Star, Package, Smartphone, ArrowRight, ChevronLeft, ChevronRight as ChevronRightIcon } from 'lucide-react';
+import { Star, Package, Smartphone, ArrowRight, ChevronLeft, ChevronRight as ChevronRightIcon, Shield, ShoppingBag, MapPin } from 'lucide-react';
 
 /* ─── Data ──────────────────────────────────────────────── */
 
@@ -49,6 +49,42 @@ const AD_BOOKS = [
     badgeColor: '#94A3B8',
     badgeBg: 'rgba(148,163,184,0.1)',
     tagline: 'Protect your business online',
+  },
+];
+
+const AD_PRODUCTS = [
+  {
+    id: 'danso-secure',
+    name: 'DansoSecure',
+    tagline: "Ghana's #1 employee verification & CCTV platform",
+    accentColor: '#2D5BE3',
+    features: ['Background Checks', 'CCTV Installation', 'Employment Contracts'],
+    cta: 'Get Started',
+    href: '/services',
+    Icon: Shield,
+    screenshot: '/danso-secure-contracts.jpg',
+  },
+  {
+    id: 'danso-mall',
+    name: 'Danso Mall',
+    tagline: 'Shop phones, fashion, electronics & more',
+    accentColor: '#0891B2',
+    features: ['10,000+ Products', 'Flash Sales Daily', 'MoMo Payments'],
+    cta: 'Shop Now',
+    href: '/products',
+    Icon: ShoppingBag,
+    screenshot: '/danso-mall-home.jpg',
+  },
+  {
+    id: 'primetrack',
+    name: 'PrimeTrack',
+    tagline: 'Track employees & record sales in real time',
+    accentColor: '#059669',
+    features: ['GPS Clock In/Out', 'Sales Recording', 'Daily Reports'],
+    cta: 'Learn More',
+    href: '/products',
+    Icon: MapPin,
+    screenshot: '/primetrack-sales.jpg',
   },
 ];
 
@@ -170,6 +206,107 @@ function AdCard({ book }: { book: typeof AD_BOOKS[0] }) {
           style={{ backgroundColor: '#2D5BE3' }}
         >
           Order Now <ArrowRight size={10} />
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+/* ─── Product card ───────────────────────────────────────── */
+
+function ProductCard({ product }: { product: typeof AD_PRODUCTS[0] }) {
+  const [hovered, setHovered] = useState(false);
+  const { Icon } = product;
+
+  return (
+    <Link
+      href={product.href}
+      className="flex flex-col overflow-hidden"
+      style={{
+        backgroundColor: 'rgba(255,255,255,0.04)',
+        border: '1px solid rgba(255,255,255,0.07)',
+        borderTop: `2px solid ${product.accentColor}`,
+        transform: hovered ? 'translateY(-6px)' : 'translateY(0)',
+        boxShadow: hovered
+          ? `0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px ${product.accentColor}33`
+          : '0 4px 12px rgba(0,0,0,0.25)',
+        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {/* Screenshot thumbnail */}
+      <div className="relative overflow-hidden" style={{ height: '130px', borderBottom: `2px solid ${product.accentColor}` }}>
+        <Image
+          src={product.screenshot}
+          alt={product.name}
+          fill
+          className="object-cover object-top"
+          style={{
+            transform: hovered ? 'scale(1.05)' : 'scale(1)',
+            transition: 'transform 0.5s ease',
+          }}
+          sizes="220px"
+        />
+        <div className="absolute inset-0 pointer-events-none"
+             style={{ background: 'linear-gradient(to top, rgba(6,10,28,0.7) 0%, transparent 60%)' }} />
+        <span
+          className="absolute top-2 right-2 text-[9px] font-extrabold uppercase tracking-widest px-2 py-0.5"
+          style={{
+            backgroundColor: `${product.accentColor}cc`,
+            color: '#fff',
+          }}
+        >
+          LIVE
+        </span>
+      </div>
+
+      <div className="p-4 flex flex-col flex-1 gap-3">
+        {/* Icon + name */}
+        <div className="flex items-center gap-2">
+          <div
+            className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
+            style={{ backgroundColor: `${product.accentColor}20` }}
+          >
+            <Icon size={13} style={{ color: product.accentColor }} />
+          </div>
+          <h4 className="text-xs font-extrabold leading-snug" style={{ color: '#F1F5F9' }}>
+            {product.name}
+          </h4>
+        </div>
+
+        {/* Tagline */}
+        <p className="text-[10px] leading-snug" style={{ color: 'rgba(255,255,255,0.4)' }}>
+          {product.tagline}
+        </p>
+
+        {/* Features */}
+        <div
+          className="flex flex-col gap-1.5 pt-3 mt-auto"
+          style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
+        >
+          {product.features.map((f) => (
+            <div key={f} className="flex items-center gap-1.5">
+              <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+                <path
+                  d="M2.5 6l2.5 2.5 4.5-5"
+                  stroke={product.accentColor}
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className="text-[10px]" style={{ color: 'rgba(255,255,255,0.55)' }}>{f}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* CTA */}
+        <div
+          className="flex items-center justify-center gap-1.5 py-2 text-[10px] font-extrabold uppercase tracking-widest text-white mt-2"
+          style={{ backgroundColor: product.accentColor }}
+        >
+          {product.cta} <ArrowRight size={10} />
         </div>
       </div>
     </Link>
@@ -312,6 +449,50 @@ export function BookAds() {
                 Browse Full Bookshop
               </p>
             </Link>
+          </div>
+        </div>
+
+        {/* ── Products section ── */}
+        <div className="mt-8 pt-7" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+          <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center gap-3">
+              <div
+                className="w-8 h-8 flex items-center justify-center shrink-0"
+                style={{ background: 'linear-gradient(135deg, #2D5BE3, #1A3A9F)' }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2"/>
+                  <path d="M8 21h8M12 17v4"/>
+                </svg>
+              </div>
+              <div>
+                <p
+                  className="text-[9px] font-bold uppercase tracking-[4px] leading-none mb-0.5"
+                  style={{ color: 'rgba(45,91,227,0.75)' }}
+                >
+                  DansoGroups Products
+                </p>
+                <h3
+                  className="text-sm font-extrabold leading-none"
+                  style={{ color: '#F1F5F9', letterSpacing: '0.02em' }}
+                >
+                  Our Digital Products
+                </h3>
+              </div>
+            </div>
+            <Link
+              href="/products"
+              className="hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transition-opacity hover:opacity-70"
+              style={{ color: '#93B4FF' }}
+            >
+              View All <ArrowRight size={12} />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {AD_PRODUCTS.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
           </div>
         </div>
 

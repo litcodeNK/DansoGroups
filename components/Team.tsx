@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Share2 } from 'lucide-react';
+import { User, ArrowRight } from 'lucide-react';
 
 function SectionBadge({ children }: { children: React.ReactNode }) {
   return (
@@ -48,39 +48,53 @@ export function Team() {
 
         <div className="grid md:grid-cols-3 gap-6">
           {team.map(({ name, role, img }) => (
-            <div key={name} className="relative overflow-hidden rounded-xl group" style={{ height: '380px' }}>
-              <Image
-                src={img}
-                alt={name}
-                fill
-                className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                sizes="(max-width:768px) 100vw, 33vw"
-              />
+            <div
+              key={name}
+              className="bg-white rounded-xl overflow-hidden flex flex-col group hover:shadow-xl transition-shadow"
+              style={{ border: '1px solid #E2E8F0' }}
+            >
+              {/* Image */}
+              <div className="relative overflow-hidden" style={{ height: '260px' }}>
+                <Image
+                  src={img}
+                  alt={name}
+                  fill
+                  className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                  sizes="(max-width:768px) 100vw, 33vw"
+                />
+              </div>
 
-              {/* Name/role bar */}
-              <div
-                className="absolute bottom-0 left-0 right-0 py-4 px-5 flex items-center justify-between"
-                style={{ backgroundColor: '#2D5BE3' }}
-              >
-                <div>
-                  <h4 className="text-white font-bold text-base">{name}</h4>
-                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.75)' }}>
-                    {role}
-                  </p>
-                </div>
-                <button
-                  className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
-                  style={{ border: '1px solid rgba(255,255,255,0.4)' }}
-                  aria-label="Share"
+              {/* Icon badge */}
+              <div className="px-6 -mt-6 relative z-10">
+                <div
+                  className="w-14 h-14 flex items-center justify-center rounded-sm shadow-lg"
+                  style={{ backgroundColor: '#2D5BE3' }}
                 >
-                  <Share2 size={15} className="text-white" />
-                </button>
+                  <User size={26} className="text-white" />
+                </div>
+              </div>
+
+              {/* Body */}
+              <div className="px-6 pt-3 pb-7 flex flex-col flex-1">
+                <h3 className="text-lg font-bold mb-1" style={{ color: '#0D1B2A' }}>
+                  {name}
+                </h3>
+                <p className="text-sm mb-5" style={{ color: '#64748B' }}>
+                  {role}
+                </p>
+                <a
+                  href="#"
+                  className="inline-flex items-center gap-2 text-sm font-bold transition-opacity hover:opacity-80"
+                  style={{ color: '#2D5BE3' }}
+                >
+                  View Profile <ArrowRight size={14} />
+                </a>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Decorative circuit dots bottom right */}
+        {/* Decorative circuit dots */}
         <div className="flex justify-end mt-8 opacity-30">
           <svg width="160" height="60" viewBox="0 0 160 60" fill="none">
             <circle cx="10" cy="30" r="3" fill="#2D5BE3" />

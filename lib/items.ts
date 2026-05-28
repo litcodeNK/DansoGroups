@@ -37,6 +37,27 @@ export const items: Item[] = [
     ],
   },
   {
+    slug: 'danso-secure',
+    name: 'DansoSecure',
+    type: 'app',
+    image:
+      'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop',
+    description:
+      "Ghana's first all-in-one employee verification, CCTV installation, and legal contract platform. Hire with confidence. Protect your business.",
+    longDescription:
+      "DansoSecure helps businesses hire with confidence and secure their operations. From background checks and legally-vetted employment contracts to 4K CCTV installation and 24/7 cloud monitoring, it's the complete security stack for African enterprises. Pay via MTN MoMo, Vodafone Cash, AirtelTigo, or bank transfer.",
+    features: [
+      'Employee background checks with digital reports',
+      'Legally-vetted employment contract templates (GH₵ 10/template)',
+      'Digital signature and cloud storage for all contracts',
+      '4K CCTV camera installation with cloud infrastructure',
+      '24/7 monitoring with mobile access',
+      'MTN MoMo, Vodafone Cash, AirtelTigo payments',
+    ],
+    appStoreUrl: '#',
+    playStoreUrl: '#',
+  },
+  {
     slug: 'danso-mall',
     name: 'Danso Mall',
     type: 'app',

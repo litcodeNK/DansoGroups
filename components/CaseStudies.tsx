@@ -1,8 +1,5 @@
-'use client';
-
-import { useState } from 'react';
 import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
+import { Shield, ShoppingBag, Smartphone, BookOpen, ArrowRight } from 'lucide-react';
 
 function SectionBadge({ children }: { children: React.ReactNode }) {
   return (
@@ -20,45 +17,40 @@ function SectionBadge({ children }: { children: React.ReactNode }) {
 
 const cases = [
   {
-    category: 'Security',
-    title: 'Network Security',
-    img: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=600&auto=format&fit=crop',
+    category: 'Cybersecurity',
+    title: 'DansoSecure',
+    desc: "Ghana's first all-in-one employee verification, CCTV, and legal contract platform.",
+    accentColor: '#2D5BE3',
+    img: '/danso-secure-services.jpg',
+    icon: Shield,
   },
   {
-    category: 'Solution',
-    title: 'IT Management',
-    img: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=600&auto=format&fit=crop',
+    category: 'E-Commerce',
+    title: 'Danso Mall',
+    desc: 'A marketplace for phones, fashion, electronics, gaming, and appliances across Ghana.',
+    accentColor: '#0891B2',
+    img: '/danso-mall-categories.jpg',
+    icon: ShoppingBag,
   },
   {
-    category: 'Technology',
-    title: 'Platform Integration',
-    img: 'https://images.unsplash.com/photo-1573495612937-f01934eeaaa7?q=80&w=600&auto=format&fit=crop',
+    category: 'Mobile App',
+    title: 'PrimeTrack',
+    desc: 'Real-time employee attendance with GPS clock-in, location verification, and sales recording.',
+    accentColor: '#059669',
+    img: '/primetrack-sales.jpg',
+    icon: Smartphone,
   },
   {
-    category: 'Solution',
-    title: 'Web Development',
-    img: 'https://images.unsplash.com/photo-1617802690992-15d93263d3a9?q=80&w=600&auto=format&fit=crop',
-  },
-  {
-    category: 'Cloud',
-    title: 'Cloud Migration',
-    img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600&auto=format&fit=crop',
-  },
-  {
-    category: 'Mobile',
-    title: 'Mobile App Launch',
-    img: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=600&auto=format&fit=crop',
+    category: 'Publishing',
+    title: 'Be A Ghanaian',
+    desc: 'A manifesto for mind liberation and national development by Asante Danso — 2026.',
+    accentColor: '#D4A843',
+    img: '/book-be-a-ghanaian-cover.jpg',
+    icon: BookOpen,
   },
 ];
 
-const VISIBLE = 4;
-
 export function CaseStudies() {
-  const [start, setStart] = useState(0);
-
-  const canPrev = start > 0;
-  const canNext = start < cases.length - VISIBLE;
-
   return (
     <section className="py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -75,67 +67,60 @@ export function CaseStudies() {
             className="shrink-0 flex items-center gap-2 text-white text-sm font-bold px-7 py-3.5 transition-opacity hover:opacity-90"
             style={{ backgroundColor: '#2D5BE3' }}
           >
-            View All Case <span className="text-base">→</span>
+            View All Cases <span className="text-base">→</span>
           </a>
         </div>
 
         {/* Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          {cases.slice(start, start + VISIBLE).map(({ category, title, img }) => (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+          {cases.map(({ category, title, desc, accentColor, img, icon: Icon }) => (
             <div
               key={title}
-              className="relative overflow-hidden rounded-lg group"
-              style={{ height: '340px' }}
+              className="bg-white rounded-xl overflow-hidden flex flex-col group hover:shadow-xl transition-shadow"
+              style={{ border: '1px solid #E2E8F0' }}
             >
-              <Image
-                src={img}
-                alt={title}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500"
-                sizes="(max-width:768px) 50vw, 25vw"
-              />
-              {/* Dark gradient overlay */}
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    'linear-gradient(to top, rgba(5,12,30,0.85) 0%, rgba(5,12,30,0.2) 60%, transparent 100%)',
-                }}
-              />
-              {/* Bottom content */}
-              <div className="absolute bottom-0 left-0 right-0 p-5">
-                <p className="text-xs font-semibold mb-1.5" style={{ color: '#7BA7FF' }}>
-                  {category}
-                </p>
-                <div className="flex items-center justify-between">
-                  <h3 className="text-white font-bold text-base">{title}</h3>
-                  <button
-                    className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 transition-colors hover:bg-white/20"
-                    style={{ backgroundColor: '#2D5BE3' }}
-                    aria-label={`View ${title}`}
-                  >
-                    <ArrowRight size={15} className="text-white" />
-                  </button>
+              {/* Image */}
+              <div className="relative overflow-hidden" style={{ height: '180px' }}>
+                <Image
+                  src={img}
+                  alt={title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  sizes="(max-width:768px) 50vw, 25vw"
+                />
+                <div className="absolute top-0 left-0 right-0 h-0.5" style={{ backgroundColor: accentColor }} />
+              </div>
+
+              {/* Icon badge */}
+              <div className="px-5 -mt-6 relative z-10">
+                <div
+                  className="w-14 h-14 flex items-center justify-center rounded-sm shadow-lg"
+                  style={{ backgroundColor: accentColor }}
+                >
+                  <Icon size={24} className="text-white" />
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
 
-        {/* Dot pagination */}
-        <div className="flex items-center justify-center gap-3">
-          {Array.from({ length: cases.length - VISIBLE + 1 }).map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setStart(i)}
-              aria-label={`Page ${i + 1}`}
-              className="rounded-full transition-all duration-300"
-              style={{
-                width: i === start ? '28px' : '10px',
-                height: '10px',
-                backgroundColor: i === start ? '#2D5BE3' : '#CBD5E1',
-              }}
-            />
+              {/* Body */}
+              <div className="px-5 pt-3 pb-6 flex flex-col flex-1">
+                <p className="text-xs font-semibold mb-1" style={{ color: accentColor }}>
+                  {category}
+                </p>
+                <h3 className="font-bold text-base mb-2" style={{ color: '#0D1B2A' }}>
+                  {title}
+                </h3>
+                <p className="text-xs leading-relaxed flex-1 line-clamp-3" style={{ color: '#64748B' }}>
+                  {desc}
+                </p>
+                <a
+                  href="#"
+                  className="inline-flex items-center gap-1.5 text-sm font-bold mt-4 transition-opacity hover:opacity-70"
+                  style={{ color: accentColor }}
+                >
+                  View Case Study <ArrowRight size={14} />
+                </a>
+              </div>
+            </div>
           ))}
         </div>
       </div>
