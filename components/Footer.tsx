@@ -4,6 +4,7 @@ import { useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Clock, Phone, MapPin } from 'lucide-react';
+import { FloatingShapes } from './FloatingShapes';
 import { gsap } from '@/lib/gsap';
 
 const itSolution = [
@@ -78,6 +79,7 @@ export function Footer() {
 
   return (
     <footer ref={footerRef} style={{ backgroundColor: '#060D18', color: '#ffffff' }} className="relative overflow-hidden">
+      <FloatingShapes variant="dark" />
       {/* Decorative triangles */}
       <div className="absolute top-0 left-0 pointer-events-none opacity-30">
         <svg width="120" height="180" viewBox="0 0 120 180" fill="none">

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Search, Menu, X, Mail, Phone, ArrowRight, BookOpen, Home, Info, Wrench, FileText, Phone as PhoneIcon } from 'lucide-react';
+import { FloatingShapes } from './FloatingShapes';
 
 /* ─── Searchable page index ─────────────────────────────── */
 
@@ -345,14 +346,15 @@ function ConsultationDrawer({ onClose }: { onClose: () => void }) {
     setSubmitted(true);
   }
 
-  const inputCls = 'w-full px-4 py-3 text-sm outline-none transition-colors focus:ring-2';
+  const inputCls = 'w-full px-4 py-3 text-sm outline-none transition-colors focus:ring-1 focus:ring-white/40 placeholder:text-white/30';
   const inputStyle = {
-    border: '1px solid #CBD5E1',
-    backgroundColor: '#F8FAFC',
-    color: '#0D1B2A',
+    border: '1px solid rgba(255,255,255,0.22)',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    color: '#fff',
+    backdropFilter: 'blur(4px)',
   } as React.CSSProperties;
   const labelCls = 'block text-xs font-bold uppercase tracking-wider mb-1.5';
-  const labelStyle = { color: '#334155' };
+  const labelStyle = { color: 'rgba(255,255,255,0.8)' };
 
   return (
     <>
@@ -365,152 +367,172 @@ function ConsultationDrawer({ onClose }: { onClose: () => void }) {
 
       {/* Drawer panel */}
       <div
-        className="fixed top-0 right-0 h-full z-[160] overflow-y-auto flex flex-col"
+        className="fixed top-0 right-0 h-full z-[160] overflow-hidden flex flex-col"
         style={{
           width: '460px',
           maxWidth: '100vw',
-          backgroundColor: '#fff',
           animation: 'slide-in-right 0.35s ease forwards',
-          boxShadow: '-8px 0 40px rgba(0,0,0,0.18)',
+          boxShadow: '-8px 0 40px rgba(0,0,0,0.3)',
         }}
       >
-        {/* Header */}
+        {/* Background image */}
+        <Image
+          src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop"
+          alt=""
+          fill
+          className="object-cover object-center"
+          sizes="460px"
+        />
+
+        {/* Dark gradient overlay */}
         <div
-          className="flex items-start justify-between p-7 shrink-0"
-          style={{ backgroundColor: '#2D5BE3' }}
-        >
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[3px] mb-1" style={{ color: 'rgba(255,255,255,0.65)' }}>
-              Free Consultation
-            </p>
-            <h3 className="text-2xl font-extrabold text-white leading-tight">
-              Book A<br />Consultation
-            </h3>
-            <p className="text-sm mt-2" style={{ color: 'rgba(255,255,255,0.7)' }}>
-              Tell us about your project — we&apos;ll get back to you within 24 hours.
-            </p>
-          </div>
-          <button
-            onClick={onClose}
-            className="shrink-0 mt-1 text-white/60 hover:text-white transition-colors"
-            aria-label="Close"
-          >
-            <X size={22} />
-          </button>
-        </div>
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(160deg, rgba(13,27,42,0.93) 0%, rgba(45,91,227,0.88) 100%)' }}
+        />
 
-        {/* Body */}
-        <div className="flex-1 p-7">
-          {submitted ? (
-            <div className="flex flex-col items-center justify-center h-full text-center py-16">
-              <div
-                className="w-16 h-16 rounded-full flex items-center justify-center mb-5"
-                style={{ backgroundColor: '#EEF2FF' }}
-              >
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2D5BE3" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              </div>
-              <h4 className="text-xl font-extrabold mb-2" style={{ color: '#0D1B2A' }}>
-                Consultation Booked!
-              </h4>
-              <p className="text-sm leading-relaxed mb-8" style={{ color: '#64748B' }}>
-                Thank you, <strong>{form.name}</strong>. We&apos;ve received your request and will reach out to <strong>{form.email}</strong> within 24 hours.
+        {/* Animated shapes */}
+        <FloatingShapes variant="dark" />
+
+        {/* Scrollable content — sits above layers */}
+        <div className="relative z-10 flex flex-col h-full overflow-y-auto">
+          {/* Header */}
+          <div className="flex items-start justify-between p-7 shrink-0">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[3px] mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                Free Consultation
               </p>
-              <button
-                onClick={onClose}
-                className="text-white text-sm font-bold px-7 py-3 transition-opacity hover:opacity-90"
-                style={{ backgroundColor: '#2D5BE3' }}
-              >
-                Close
-              </button>
+              <h3 className="text-2xl font-extrabold text-white leading-tight">
+                Book A<br />Consultation
+              </h3>
+              <p className="text-sm mt-2" style={{ color: 'rgba(255,255,255,0.65)' }}>
+                Tell us about your project — we&apos;ll get back to you within 24 hours.
+              </p>
             </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Full Name */}
-              <div>
-                <label className={labelCls} style={labelStyle}>Full Name *</label>
-                <input
-                  required
-                  type="text"
-                  placeholder="e.g. Kwame Mensah"
-                  value={form.name}
-                  onChange={(e) => set('name', e.target.value)}
-                  className={inputCls}
-                  style={inputStyle}
-                />
-              </div>
+            <button
+              onClick={onClose}
+              className="shrink-0 mt-1 text-white/50 hover:text-white transition-colors"
+              aria-label="Close"
+            >
+              <X size={22} />
+            </button>
+          </div>
 
-              {/* Email */}
-              <div>
-                <label className={labelCls} style={labelStyle}>Email Address *</label>
-                <input
-                  required
-                  type="email"
-                  placeholder="you@example.com"
-                  value={form.email}
-                  onChange={(e) => set('email', e.target.value)}
-                  className={inputCls}
-                  style={inputStyle}
-                />
-              </div>
+          {/* Divider */}
+          <div className="mx-7 shrink-0" style={{ height: '1px', backgroundColor: 'rgba(255,255,255,0.12)' }} />
 
-              {/* Phone */}
-              <div>
-                <label className={labelCls} style={labelStyle}>Phone Number</label>
-                <input
-                  type="tel"
-                  placeholder="+233 54 000 0000"
-                  value={form.phone}
-                  onChange={(e) => set('phone', e.target.value)}
-                  className={inputCls}
-                  style={inputStyle}
-                />
-              </div>
-
-              {/* Service */}
-              <div>
-                <label className={labelCls} style={labelStyle}>Service Interested In *</label>
-                <select
-                  required
-                  value={form.service}
-                  onChange={(e) => set('service', e.target.value)}
-                  className={inputCls}
-                  style={{ ...inputStyle, appearance: 'auto' }}
+          {/* Body */}
+          <div className="flex-1 p-7">
+            {submitted ? (
+              <div className="flex flex-col items-center justify-center h-full text-center py-16">
+                <div
+                  className="w-16 h-16 rounded-full flex items-center justify-center mb-5"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.15)', border: '1.5px solid rgba(255,255,255,0.3)' }}
                 >
-                  <option value="">Select a service…</option>
-                  {SERVICES.map((s) => (
-                    <option key={s} value={s}>{s}</option>
-                  ))}
-                </select>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </div>
+                <h4 className="text-xl font-extrabold mb-2 text-white">
+                  Consultation Booked!
+                </h4>
+                <p className="text-sm leading-relaxed mb-8" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                  Thank you, <strong>{form.name}</strong>. We&apos;ve received your request and will reach out to <strong>{form.email}</strong> within 24 hours.
+                </p>
+                <button
+                  onClick={onClose}
+                  className="text-white text-sm font-bold px-7 py-3 transition-opacity hover:opacity-90"
+                  style={{ backgroundColor: '#2D5BE3' }}
+                >
+                  Close
+                </button>
               </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Full Name */}
+                <div>
+                  <label className={labelCls} style={labelStyle}>Full Name *</label>
+                  <input
+                    required
+                    type="text"
+                    placeholder="e.g. Kwame Mensah"
+                    value={form.name}
+                    onChange={(e) => set('name', e.target.value)}
+                    className={inputCls}
+                    style={inputStyle}
+                  />
+                </div>
 
-              {/* Message */}
-              <div>
-                <label className={labelCls} style={labelStyle}>Tell Us About Your Project</label>
-                <textarea
-                  rows={4}
-                  placeholder="Briefly describe your goals or challenges…"
-                  value={form.message}
-                  onChange={(e) => set('message', e.target.value)}
-                  className={inputCls}
-                  style={{ ...inputStyle, resize: 'vertical' }}
-                />
-              </div>
+                {/* Email */}
+                <div>
+                  <label className={labelCls} style={labelStyle}>Email Address *</label>
+                  <input
+                    required
+                    type="email"
+                    placeholder="you@example.com"
+                    value={form.email}
+                    onChange={(e) => set('email', e.target.value)}
+                    className={inputCls}
+                    style={inputStyle}
+                  />
+                </div>
 
-              <button
-                type="submit"
-                className="w-full text-white text-sm font-bold py-4 transition-opacity hover:opacity-90 flex items-center justify-center gap-2"
-                style={{ backgroundColor: '#2D5BE3' }}
-              >
-                Book Consultation <ArrowRight size={16} />
-              </button>
+                {/* Phone */}
+                <div>
+                  <label className={labelCls} style={labelStyle}>Phone Number</label>
+                  <input
+                    type="tel"
+                    placeholder="+233 54 000 0000"
+                    value={form.phone}
+                    onChange={(e) => set('phone', e.target.value)}
+                    className={inputCls}
+                    style={inputStyle}
+                  />
+                </div>
 
-              <p className="text-xs text-center" style={{ color: '#94A3B8' }}>
-                Your information is kept private and never shared.
-              </p>
-            </form>
-          )}
+                {/* Service */}
+                <div>
+                  <label className={labelCls} style={labelStyle}>Service Interested In *</label>
+                  <select
+                    required
+                    value={form.service}
+                    onChange={(e) => set('service', e.target.value)}
+                    className={inputCls}
+                    style={{ ...inputStyle, appearance: 'auto' }}
+                  >
+                    <option value="" style={{ color: '#0D1B2A', backgroundColor: '#fff' }}>Select a service…</option>
+                    {SERVICES.map((s) => (
+                      <option key={s} value={s} style={{ color: '#0D1B2A', backgroundColor: '#fff' }}>{s}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Message */}
+                <div>
+                  <label className={labelCls} style={labelStyle}>Tell Us About Your Project</label>
+                  <textarea
+                    rows={4}
+                    placeholder="Briefly describe your goals or challenges…"
+                    value={form.message}
+                    onChange={(e) => set('message', e.target.value)}
+                    className={inputCls}
+                    style={{ ...inputStyle, resize: 'vertical' }}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full text-white text-sm font-bold py-4 transition-opacity hover:opacity-90 flex items-center justify-center gap-2"
+                  style={{ backgroundColor: '#2D5BE3' }}
+                >
+                  Book Consultation <ArrowRight size={16} />
+                </button>
+
+                <p className="text-xs text-center" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                  Your information is kept private and never shared.
+                </p>
+              </form>
+            )}
+          </div>
         </div>
       </div>
     </>
@@ -556,8 +578,9 @@ export function Navbar() {
     <>
       <header className="fixed top-0 left-0 right-0 z-50">
         {/* ── Top bar ── */}
-        <div className="hidden lg:block" style={{ backgroundColor: '#0B1A38' }}>
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="hidden lg:block relative overflow-hidden" style={{ backgroundColor: '#0B1A38' }}>
+          <FloatingShapes variant="dark" />
+          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
             <div className="flex items-center justify-between h-10">
               <div className="flex items-center gap-7">
                 <span className="flex items-center gap-1.5 text-xs" style={{ color: 'rgba(255,255,255,0.65)' }}>
