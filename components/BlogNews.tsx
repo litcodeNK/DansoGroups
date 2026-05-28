@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { User, MessageCircle, ArrowRight } from 'lucide-react';
+import { FloatingShapes } from './FloatingShapes';
 
 function SectionBadge({ children }: { children: React.ReactNode }) {
   return (
@@ -41,8 +42,9 @@ const posts = [
 
 export function BlogNews() {
   return (
-    <section id="blog" className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section id="blog" className="relative py-24 bg-white overflow-hidden">
+      <FloatingShapes variant="light" />
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header row */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div>

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { Code, Shield, Smartphone, Settings, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { FloatingShapes } from './FloatingShapes';
 
 function SectionBadge({ children }: { children: React.ReactNode }) {
   return (
@@ -58,6 +59,8 @@ export function Services() {
       className="relative py-24 overflow-hidden"
       style={{ backgroundColor: '#060D18' }}
     >
+      <FloatingShapes variant="dark" />
+
       {/* Subtle mesh pattern overlay */}
       <div
         className="absolute inset-0 pointer-events-none opacity-5"

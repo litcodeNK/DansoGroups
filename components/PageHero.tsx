@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { FloatingShapes } from './FloatingShapes';
 
 interface Props {
   title: string;
@@ -28,6 +29,8 @@ export function PageHero({ title, breadcrumb, image }: Props) {
         className="absolute inset-0"
         style={{ backgroundColor: 'rgba(6,18,52,0.75)' }}
       />
+
+      <FloatingShapes variant="dark" />
 
       {/* Geometric blue triangle bottom-left */}
       <div className="absolute bottom-0 left-0 pointer-events-none">

@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { User, ArrowRight } from 'lucide-react';
+import { FloatingShapes } from './FloatingShapes';
 
 function SectionBadge({ children }: { children: React.ReactNode }) {
   return (
@@ -35,8 +36,9 @@ const team = [
 
 export function Team() {
   return (
-    <section id="team" className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+    <section id="team" className="relative py-24 bg-white overflow-hidden">
+      <FloatingShapes variant="light" />
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
         <div className="text-center mb-14">
           <div className="flex justify-center">
             <SectionBadge>Our Team</SectionBadge>

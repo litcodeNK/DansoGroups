@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { Settings, HeadphonesIcon, Pause, Play } from 'lucide-react';
+import { FloatingShapes } from './FloatingShapes';
 
 function SectionBadge({ children }: { children: React.ReactNode }) {
   return (
@@ -55,7 +56,9 @@ export function WhyChooseUs() {
     <section className="overflow-hidden">
       <div className="grid lg:grid-cols-2">
         {/* Left — light content */}
-        <div className="py-20 px-8 lg:px-16 xl:px-20" style={{ backgroundColor: '#F3F6FF' }}>
+        <div className="relative py-20 px-8 lg:px-16 xl:px-20 overflow-hidden" style={{ backgroundColor: '#F3F6FF' }}>
+          <FloatingShapes variant="light" />
+          <div className="relative z-10">
           <SectionBadge>Why Choose Us</SectionBadge>
 
           <h2 className="text-3xl lg:text-4xl font-extrabold leading-tight mb-8" style={{ color: '#0D1B2A' }}>
@@ -105,6 +108,7 @@ export function WhyChooseUs() {
               </div>
             ))}
           </div>
+          </div>{/* end z-10 wrapper */}
         </div>
 
         {/* Right — video panel */}

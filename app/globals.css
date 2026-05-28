@@ -67,3 +67,24 @@ body {
   from { transform: translateX(100%); }
   to   { transform: translateX(0); }
 }
+
+/* Section decorative shape animations (mirrors Hero inline keyframes) */
+@keyframes hfloat {
+  0%,100% { transform: translateY(0px); }
+  50%     { transform: translateY(-28px); }
+}
+@keyframes hsway {
+  0%,100% { transform: translateY(0px) rotate(12deg); }
+  25%     { transform: translateY(-20px) rotate(20deg); }
+  75%     { transform: translateY(-10px) rotate(4deg); }
+}
+@keyframes hdrift {
+  0%,100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+  33%     { transform: translateY(-22px) translateX(8px) rotate(8deg); }
+  66%     { transform: translateY(-12px) translateX(-6px) rotate(-6deg); }
+}
+@keyframes hspin {
+  0%,100% { transform: translateY(0px) rotate(45deg); }
+  25%     { transform: translateY(-18px) rotate(70deg); }
+  75%     { transform: translateY(-26px) rotate(20deg); }
+}

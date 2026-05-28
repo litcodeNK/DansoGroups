@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { CheckCircle2 } from 'lucide-react';
+import { FloatingShapes } from './FloatingShapes';
 
 function SectionBadge({ children }: { children: React.ReactNode }) {
   return (
@@ -24,8 +25,9 @@ const checks = [
 
 export function About() {
   return (
-    <section id="about" className="py-24 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+    <section id="about" className="relative py-24 bg-white overflow-hidden">
+      <FloatingShapes variant="light" />
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
 
           {/* Left — overlapping images */}

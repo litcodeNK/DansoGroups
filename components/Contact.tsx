@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Phone, Mail, MapPin } from 'lucide-react';
 import { toast } from 'sonner';
+import { FloatingShapes } from './FloatingShapes';
 
 function SectionBadge({ children }: { children: React.ReactNode }) {
   return (
@@ -60,57 +62,82 @@ export function Contact() {
   };
 
   return (
-    <section className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section className="relative py-24 bg-white overflow-hidden">
+      <FloatingShapes variant="light" />
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-[1fr_1.4fr] gap-10 items-start">
 
-          {/* ── Left: Contact Information card ── */}
-          <div
-            className="rounded-lg p-8 text-white"
-            style={{ backgroundColor: '#2D5BE3' }}
-          >
-            <h3 className="text-xl font-bold mb-3">Contact Information</h3>
-            <p className="text-sm leading-relaxed mb-8" style={{ color: 'rgba(255,255,255,0.75)' }}>
-              Nullam varius, erat quis iaculis dictum, eros urna varius eros, ut blandit felis odio
-              in turpis. Quisque.
-            </p>
-
-            <div className="space-y-6 mb-8">
-              {[
-                { Icon: Phone, label: 'Call Us 7/24', value: '+233 54 123 4567' },
-                { Icon: Mail, label: 'Make a Quote', value: 'info@dansogroup.com' },
-                { Icon: MapPin, label: 'Location', value: '123 Innovation Drive, Accra' },
-              ].map(({ Icon, label, value }) => (
-                <div key={label} className="flex items-center gap-4">
-                  <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center shrink-0"
-                    style={{ border: '1.5px dashed rgba(255,255,255,0.5)' }}
-                  >
-                    <Icon size={20} className="text-white" />
-                  </div>
-                  <div>
-                    <p className="text-xs mb-0.5" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                      {label}
-                    </p>
-                    <p className="text-sm font-bold text-white">{value}</p>
-                  </div>
-                </div>
+          {/* ── Left: Contact Information card with background image ── */}
+          <div className="relative rounded-tl-3xl rounded-br-3xl overflow-hidden text-white" style={{ minHeight: '480px' }}>
+            {/* Background image */}
+            <Image
+              src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=800&auto=format&fit=crop"
+              alt="Contact background"
+              fill
+              className="object-cover object-center"
+              sizes="(max-width:1024px) 100vw, 40vw"
+            />
+            {/* Dark overlay */}
+            <div
+              className="absolute inset-0"
+              style={{ background: 'linear-gradient(160deg, rgba(13,27,42,0.88) 0%, rgba(45,91,227,0.75) 100%)' }}
+            />
+            {/* Blue accent strip at bottom */}
+            <div className="absolute bottom-0 left-0 right-0 h-1.5" style={{ backgroundColor: '#2D5BE3' }} />
+            {/* Floating dot-grid decoration */}
+            <div className="absolute top-6 right-6 grid grid-cols-4 gap-1.5 opacity-20 pointer-events-none">
+              {Array.from({ length: 16 }).map((_, i) => (
+                <div key={i} className="w-1.5 h-1.5 rounded-full bg-white" />
               ))}
             </div>
 
-            <p className="text-sm font-bold mb-3">Follow Social:</p>
-            <div className="flex gap-2">
-              {socials.map(({ label, svg }) => (
-                <a
-                  key={label}
-                  href="#"
-                  aria-label={label}
-                  className="w-9 h-9 rounded-full flex items-center justify-center transition-colors hover:bg-white/20 text-white"
-                  style={{ border: '1px solid rgba(255,255,255,0.4)' }}
-                >
-                  {svg}
-                </a>
-              ))}
+            {/* Content */}
+            <div className="relative z-10 p-8 flex flex-col h-full" style={{ minHeight: '480px' }}>
+              <h3 className="text-xl font-bold mb-3">Contact Information</h3>
+              <p className="text-sm leading-relaxed mb-8" style={{ color: 'rgba(255,255,255,0.75)' }}>
+                Reach out to us — we&apos;re always ready to help your business grow and thrive with
+                the right technology solutions.
+              </p>
+
+              <div className="space-y-6 mb-8 flex-1">
+                {[
+                  { Icon: Phone, label: 'Call Us 7/24', value: '+233 54 123 4567' },
+                  { Icon: Mail, label: 'Email Us', value: 'info@dansogroup.com' },
+                  { Icon: MapPin, label: 'Location', value: '123 Innovation Drive, Accra' },
+                ].map(({ Icon, label, value }) => (
+                  <div key={label} className="flex items-center gap-4">
+                    <div
+                      className="w-12 h-12 rounded-full flex items-center justify-center shrink-0"
+                      style={{ border: '1.5px dashed rgba(255,255,255,0.5)', backgroundColor: 'rgba(255,255,255,0.08)' }}
+                    >
+                      <Icon size={20} className="text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs mb-0.5" style={{ color: 'rgba(255,255,255,0.65)' }}>
+                        {label}
+                      </p>
+                      <p className="text-sm font-bold text-white">{value}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div>
+                <p className="text-sm font-bold mb-3">Follow Social:</p>
+                <div className="flex gap-2">
+                  {socials.map(({ label, svg }) => (
+                    <a
+                      key={label}
+                      href="#"
+                      aria-label={label}
+                      className="w-9 h-9 rounded-full flex items-center justify-center transition-colors hover:bg-white/20 text-white"
+                      style={{ border: '1px solid rgba(255,255,255,0.4)' }}
+                    >
+                      {svg}
+                    </a>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
