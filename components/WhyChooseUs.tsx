@@ -1,5 +1,7 @@
-import Image from 'next/image';
-import { Settings, HeadphonesIcon } from 'lucide-react';
+'use client';
+
+import { useRef, useState } from 'react';
+import { Settings, HeadphonesIcon, Pause, Play } from 'lucide-react';
 
 function SectionBadge({ children }: { children: React.ReactNode }) {
   return (
@@ -34,6 +36,21 @@ const skills = [
 ];
 
 export function WhyChooseUs() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+
+  function togglePlay() {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) {
+      v.play();
+      setPlaying(true);
+    } else {
+      v.pause();
+      setPlaying(false);
+    }
+  }
+
   return (
     <section className="overflow-hidden">
       <div className="grid lg:grid-cols-2">
@@ -90,31 +107,46 @@ export function WhyChooseUs() {
           </div>
         </div>
 
-        {/* Right — image with play button */}
-        <div className="relative min-h-[420px] lg:min-h-0">
-          <Image
-            src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=900&auto=format&fit=crop"
-            alt="Professional team"
-            fill
-            className="object-cover"
-            sizes="50vw"
+        {/* Right — video panel */}
+        <div className="relative min-h-[420px] lg:min-h-0 bg-black">
+          <video
+            ref={videoRef}
+            src="/why-choose-us.mp4"
+            className="absolute inset-0 w-full h-full object-cover"
+            playsInline
+            onEnded={() => setPlaying(false)}
           />
-          {/* Overlay */}
-          <div className="absolute inset-0" style={{ backgroundColor: 'rgba(10,25,55,0.35)' }} />
-          {/* Blue curved accent at bottom */}
+
+          {/* Dark overlay — fades out when playing */}
           <div
-            className="absolute bottom-0 left-0 right-0 h-28 rounded-tl-[60%]"
-            style={{ backgroundColor: 'rgba(45,91,227,0.5)' }}
+            className="absolute inset-0 transition-opacity duration-500"
+            style={{ backgroundColor: 'rgba(10,25,55,0.35)', opacity: playing ? 0 : 1, pointerEvents: 'none' }}
           />
-          {/* Play button */}
+
+          {/* Blue curved accent at bottom — hides when playing */}
+          {!playing && (
+            <div
+              className="absolute bottom-0 left-0 right-0 h-28 rounded-tl-[60%] pointer-events-none"
+              style={{ backgroundColor: 'rgba(45,91,227,0.5)' }}
+            />
+          )}
+
+          {/* Play / Pause button */}
           <div className="absolute inset-0 flex items-center justify-center">
             <button
-              className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-xl hover:scale-105 transition-transform"
-              aria-label="Play video"
+              onClick={togglePlay}
+              className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-xl hover:scale-105 transition-all duration-200"
+              style={{ opacity: playing ? 0.25 : 1 }}
+              aria-label={playing ? 'Pause video' : 'Play video'}
             >
-              <svg width="20" height="22" viewBox="0 0 20 22" fill="none">
-                <path d="M2 2L18 11L2 20V2Z" fill="#2D5BE3" />
-              </svg>
+              {playing
+                ? <Pause size={20} fill="#2D5BE3" style={{ color: '#2D5BE3' }} />
+                : (
+                  <svg width="20" height="22" viewBox="0 0 20 22" fill="none">
+                    <path d="M2 2L18 11L2 20V2Z" fill="#2D5BE3" />
+                  </svg>
+                )
+              }
             </button>
           </div>
         </div>
