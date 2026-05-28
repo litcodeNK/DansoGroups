@@ -111,6 +111,16 @@ const SEARCH_INDEX: SearchResult[] = [
   },
 ];
 
+/* ─── 3-D page navigator faces ──────────────────────────── */
+const PAGE_FACES = [
+  { label: 'Home',     href: '/',         img: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=400&auto=format&fit=crop' },
+  { label: 'About',    href: '/about',    img: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=400&auto=format&fit=crop' },
+  { label: 'Services', href: '/services', img: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=400&auto=format&fit=crop' },
+  { label: 'Books',    href: '/books',    img: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=400&auto=format&fit=crop' },
+  { label: 'Blog',     href: '/blog',     img: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=400&auto=format&fit=crop' },
+  { label: 'Contact',  href: '/contact',  img: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=400&auto=format&fit=crop' },
+];
+
 function scoreResult(item: SearchResult, query: string): number {
   const q = query.toLowerCase().trim();
   if (!q) return 0;
@@ -130,10 +140,20 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [activeIdx, setActiveIdx] = useState(0);
+  const [spinning, setSpinning] = useState(true);
+  const [dims, setDims] = useState({ w: 150, h: 200, r: 130 });
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
   useEffect(() => { inputRef.current?.focus(); }, []);
+
+  useEffect(() => {
+    const update = () =>
+      setDims(window.innerWidth < 640 ? { w: 110, h: 150, r: 95 } : { w: 150, h: 200, r: 130 });
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -283,31 +303,91 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
             </div>
           )}
 
-          {/* Quick links — shown when no query */}
+          {/* 3-D cylinder page navigator — shown when no query */}
           {!query && (
-            <div className="mt-10">
-              <p className="text-xs font-bold uppercase tracking-[3px] mb-5" style={{ color: 'rgba(255,255,255,0.35)' }}>
-                Quick links
+            <div className="mt-8">
+              <p
+                className="text-xs font-bold uppercase tracking-[3px] mb-6 text-center"
+                style={{ color: 'rgba(255,255,255,0.35)' }}
+              >
+                Browse Pages
               </p>
-              <div className="flex flex-wrap gap-2">
-                {['Services', 'Books', 'About Us', 'Blog', 'Contact', 'Be A Ghanaian'].map((label) => {
-                  const item = SEARCH_INDEX.find((r) => r.label === label);
-                  return item ? (
+
+              {/* Perspective container — hover/touch pauses spin */}
+              <div
+                style={{ perspective: '700px', display: 'flex', justifyContent: 'center' }}
+                onMouseEnter={() => setSpinning(false)}
+                onMouseLeave={() => setSpinning(true)}
+                onTouchStart={() => setSpinning(false)}
+                onTouchEnd={() => setSpinning(true)}
+              >
+                <div
+                  style={{
+                    transformStyle: 'preserve-3d',
+                    WebkitTransformStyle: 'preserve-3d',
+                    willChange: 'transform',
+                    width: `${dims.w}px`,
+                    height: `${dims.h}px`,
+                    position: 'relative',
+                    animation: 'cylinder-spin 12s linear infinite',
+                    animationPlayState: spinning ? 'running' : 'paused',
+                  }}
+                >
+                  {PAGE_FACES.map((face, i) => (
                     <Link
-                      key={label}
-                      href={item.href}
+                      key={face.href}
+                      href={face.href}
                       onClick={onClose}
-                      className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/20"
                       style={{
-                        border: '1px solid rgba(255,255,255,0.2)',
-                        color: 'rgba(255,255,255,0.75)',
+                        position: 'absolute',
+                        inset: 0,
+                        transform: `rotateY(${i * 60}deg) translateZ(${dims.r}px)`,
+                        backfaceVisibility: 'hidden',
+                        WebkitBackfaceVisibility: 'hidden',
+                        overflow: 'hidden',
+                        borderRadius: '6px',
+                        border: '1.5px solid rgba(255,255,255,0.3)',
+                        display: 'block',
+                        cursor: 'pointer',
                       }}
                     >
-                      {label} <ArrowRight size={11} />
+                      <Image
+                        src={face.img}
+                        fill
+                        alt={face.label}
+                        className="object-cover"
+                        sizes={`${dims.w}px`}
+                      />
+                      <div
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: 'linear-gradient(to top, rgba(13,27,42,0.88) 0%, rgba(13,27,42,0.15) 55%, transparent 100%)',
+                        }}
+                      />
+                      <span
+                        style={{
+                          position: 'absolute',
+                          bottom: 10,
+                          left: 10,
+                          right: 10,
+                          color: '#fff',
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          letterSpacing: '0.08em',
+                          textTransform: 'uppercase',
+                        }}
+                      >
+                        {face.label}
+                      </span>
                     </Link>
-                  ) : null;
-                })}
+                  ))}
+                </div>
               </div>
+
+              <p className="text-xs text-center mt-5" style={{ color: 'rgba(255,255,255,0.2)' }}>
+                Hover to pause · Click a face to navigate
+              </p>
             </div>
           )}
 

@@ -88,3 +88,9 @@ body {
   25%     { transform: translateY(-18px) rotate(70deg); }
   75%     { transform: translateY(-26px) rotate(20deg); }
 }
+
+/* 3-D page cylinder in search overlay */
+@keyframes cylinder-spin {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
+}
