@@ -141,7 +141,7 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [activeIdx, setActiveIdx] = useState(0);
   const [spinning, setSpinning] = useState(true);
-  const [dims, setDims] = useState({ w: 150, h: 200, r: 130 });
+  const [dims, setDims] = useState({ w: 150, h: 320, r: 130 });
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
@@ -149,7 +149,7 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
 
   useEffect(() => {
     const update = () =>
-      setDims(window.innerWidth < 640 ? { w: 110, h: 150, r: 95 } : { w: 150, h: 200, r: 130 });
+      setDims(window.innerWidth < 640 ? { w: 110, h: 150, r: 95 } : { w: 150, h: 320, r: 130 });
     update();
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
