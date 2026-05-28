@@ -99,7 +99,7 @@ export function Services() {
           {services.slice(start, start + visible).map(({ title, icon: Icon, img, desc }) => (
             <div
               key={title}
-              className="bg-white rounded-b-2xl overflow-hidden flex flex-col group"
+              className="bg-white rounded-tl-3xl rounded-br-3xl overflow-hidden flex flex-col group"
             >
               {/* Image */}
               <div className="relative h-52 overflow-hidden">

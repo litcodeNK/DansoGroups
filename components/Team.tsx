@@ -50,7 +50,7 @@ export function Team() {
           {team.map(({ name, role, img }) => (
             <div
               key={name}
-              className="bg-white rounded-xl overflow-hidden flex flex-col group hover:shadow-xl transition-shadow"
+              className="bg-white rounded-tl-3xl rounded-br-3xl overflow-hidden flex flex-col group hover:shadow-xl transition-shadow"
               style={{ border: '1px solid #E2E8F0' }}
             >
               {/* Image */}

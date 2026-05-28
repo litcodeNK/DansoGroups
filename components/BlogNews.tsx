@@ -64,7 +64,7 @@ export function BlogNews() {
           {posts.map((post, i) => (
             <article
               key={i}
-              className="bg-white rounded-xl overflow-hidden flex flex-col group hover:shadow-lg transition-shadow"
+              className="bg-white rounded-tl-3xl rounded-br-3xl overflow-hidden flex flex-col group hover:shadow-lg transition-shadow"
               style={{ border: '1px solid #E2E8F0' }}
             >
               {/* Image */}
